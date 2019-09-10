@@ -1,8 +1,11 @@
 ﻿import axios from 'axios';
+import { push } from 'react-router-redux';
 
 import {
     GET_GAMES,
-    GET_GAME
+    GET_GAME,
+    CREATE_GAME,
+    DELETE_GAME
 } from '../types/Games';
 
 export const getGames = () => dispatch => {
@@ -25,6 +28,36 @@ export const getGame = (id) => dispatch => {
         .then(result => {
             dispatch({
                 type: GET_GAME,
+                payload: result.data
+            });
+        })
+        .catch(error => {
+            console.log(error);
+        });
+}
+
+export const createGame = (game) => dispatch => {
+    axios
+        .post('/api/Games', game)
+        .then(result => {
+            dispatch({
+                type: CREATE_GAME,
+                payload: result.data
+            });
+
+            dispatch(push(`/games/${result.data.id}`));
+        })
+        .catch(error => {
+            console.log(error);
+        });
+};
+
+export const deleteGame = (id) => dispatch => {
+    axios
+        .delete(`/api/Games/${id}`)
+        .then(result => {
+            dispatch({
+                type: DELETE_GAME,
                 payload: result.data
             });
         })

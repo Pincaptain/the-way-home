@@ -106,7 +106,7 @@ namespace TheWayHome.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteGame(long id)
+        public async Task<ActionResult<IEnumerable<Game>>> DeleteGame(long id)
         {
             var game = await _context.Games.FindAsync(id);
 
@@ -118,7 +118,7 @@ namespace TheWayHome.Controllers
             _context.Games.Remove(game);
             await _context.SaveChangesAsync();
 
-            return NoContent();
+            return await _context.Games.ToListAsync();
         }
     }
 }

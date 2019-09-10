@@ -28,9 +28,7 @@ class Game extends Component {
 function renderGame(props) {
     return (
         <div>
-            {
-                props.game != null ? <p>{`${props.game.id}: ${props.game.name}`}</p> : <p>Loading</p>
-            }
+            {props.game != null ? <p>{`${props.game.id}: ${props.game.name}`}</p> : <p>Loading</p>}
         </div>
     );
 }

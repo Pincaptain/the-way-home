@@ -1,6 +1,8 @@
 ﻿import {
     GET_GAMES,
-    GET_GAME
+    GET_GAME,
+    DELETE_GAME,
+    CREATE_GAME
 } from '../types/Games';
 
 const initialState = {
@@ -19,7 +21,17 @@ export default function (state = initialState, action) {
             return {
                 ...state,
                 game: action.payload
-            }
+            };
+        case CREATE_GAME:
+            return {
+                ...state,
+                game: action.payload
+            };
+        case DELETE_GAME:
+            return {
+                ...state,
+                games: action.payload
+            };
         default:
             return state;
     }
