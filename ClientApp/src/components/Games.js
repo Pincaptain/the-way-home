@@ -109,7 +109,7 @@ class Games extends Component {
     }
 
     validateEditGameForm(field = null, value = null) {
-        let editGameFormErrors = this.state.gameFormErrors;
+        let editGameFormErrors = this.state.editGameFormErrors;
 
         if (field != null && value != null) {
             switch (field) {
