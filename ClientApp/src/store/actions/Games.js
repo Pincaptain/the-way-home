@@ -5,6 +5,7 @@ import {
     GET_GAMES,
     GET_GAME,
     CREATE_GAME,
+    UPDATE_GAME,
     DELETE_GAME
 } from '../types/Games';
 
@@ -52,6 +53,22 @@ export const createGame = (game) => dispatch => {
         });
 };
 
+export const updateGame = (game) => dispatch => {
+    axios
+        .put(`/api/Games/${game.id}`, game)
+        .then(result => {
+            dispatch({
+                type: UPDATE_GAME,
+                payload: result.data
+            });
+
+            dispatch(getGames());
+        })
+        .catch(error => {
+            console.log(error);
+        });
+}
+
 export const deleteGame = (id) => dispatch => {
     axios
         .delete(`/api/Games/${id}`)
@@ -60,6 +77,8 @@ export const deleteGame = (id) => dispatch => {
                 type: DELETE_GAME,
                 payload: result.data
             });
+
+            dispatch(getGames());
         })
         .catch(error => {
             console.log(error);

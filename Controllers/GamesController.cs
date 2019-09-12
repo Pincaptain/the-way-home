@@ -26,15 +26,20 @@ namespace TheWayHome.Controllers
             {
                 var gameOne = new Game()
                 {
-                    Name = "World of Warcraft Vanilla"
+                    Name = "Nogglerfoggler"
                 };
                 var gameTwo = new Game()
                 {
-                    Name = "World of Warcraft Legion"
+                    Name = "Dustbringer"
+                };
+                var gameThree = new Game()
+                {
+                    Name = "Snowmaw"
                 };
 
                 _context.Games.Add(gameOne);
                 _context.Games.Add(gameTwo);
+                _context.Games.Add(gameThree);
                 _context.SaveChanges();
             }
         }
@@ -118,7 +123,7 @@ namespace TheWayHome.Controllers
             _context.Games.Remove(game);
             await _context.SaveChangesAsync();
 
-            return await _context.Games.ToListAsync();
+            return NoContent();
         }
     }
 }
