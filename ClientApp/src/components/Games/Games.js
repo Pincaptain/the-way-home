@@ -2,9 +2,10 @@
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
+
 import { Button, Modal, ModalBody, ModalHeader, ModalFooter, Form, Input, Label, FormGroup, FormText, FormFeedback, Table } from 'reactstrap';
 
-import { getGames, createGame, updateGame, deleteGame } from '../store/actions/Games';
+import { getGames, createGame, updateGame, deleteGame } from '../../store/actions/Games';
 
 class Games extends Component {
     static propTypes = {

@@ -8,6 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 
 using TheWayHome.Models.Contexts;
+using TheWayHome.Hubs;
 
 namespace TheWayHome
 {
@@ -25,6 +26,8 @@ namespace TheWayHome
         {
             services.AddDbContext<GameContext>(opt => opt.UseInMemoryDatabase("GameDatabase"));
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddSignalR();
+            services.AddScoped<GamesHub>();
 
             // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
@@ -50,6 +53,11 @@ namespace TheWayHome
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
+
+            app.UseSignalR(routes =>
+            {
+                routes.MapHub<GamesHub>("/hubs/GamesHub");
+            });
 
             app.UseMvc(routes =>
             {

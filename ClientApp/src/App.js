@@ -3,8 +3,8 @@ import { Route } from 'react-router';
 
 import Layout from './components/Layout';
 import Home from './components/Home';
-import Games from './components/Games';
-import Game from './components/Game';
+import Games from './components/Games/Games';
+import Game from './components/Games/Game';
 
 export default () => (
     <Layout>

@@ -1,5 +1,6 @@
-﻿import axios from 'axios';
-import { push } from 'react-router-redux';
+﻿import { push } from 'react-router-redux';
+
+import axios from 'axios';
 
 import {
     GET_GAMES,

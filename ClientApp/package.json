@@ -3,10 +3,12 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@aspnet/signalr": "^1.1.4",
     "axios": "^0.19.0",
     "bootstrap": "^4.3.1",
     "jquery": "3.3.1",
     "react": "^16.0.0",
+    "react-cookies": "^0.1.1",
     "react-dom": "^16.0.0",
     "react-redux": "^5.0.6",
     "react-router-bootstrap": "^0.24.4",
@@ -16,7 +18,9 @@
     "reactstrap": "^6.3.0",
     "redux": "^3.7.2",
     "redux-thunk": "^2.2.0",
-    "rimraf": "^2.6.2"
+    "rimraf": "^2.6.2",
+    "uuid": "^3.3.3",
+    "uuid4": "^1.1.4"
   },
   "devDependencies": {
     "ajv": "^6.0.0",

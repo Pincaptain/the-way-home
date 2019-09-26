@@ -6,9 +6,10 @@ using System.ComponentModel.DataAnnotations;
 
 namespace TheWayHome.Models
 {
-    public class Game
+    public class Player
     {
-        public long Id { get; set; }
+        [Required(ErrorMessage = "Identity is required")]
+        public string Identity { get; set; }
 
         [Required(ErrorMessage = "Name is required")]
         public string Name { get; set; }
