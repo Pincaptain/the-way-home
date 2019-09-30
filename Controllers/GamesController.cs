@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 using TheWayHome.Models;
-using TheWayHome.Models.Contexts;
+using TheWayHome.Repositories;
 
 namespace TheWayHome.Controllers
 {
@@ -16,44 +11,23 @@ namespace TheWayHome.Controllers
     [ApiController]
     public class GamesController : ControllerBase
     {
-        private readonly GameContext _context;
+        private readonly IGamesRepository _gamesRepository;
 
-        public GamesController(GameContext context)
+        public GamesController(IGamesRepository gamesRepository)
         {
-            _context = context;
-
-            if (_context.Games.Count() == 0)
-            {
-                var gameOne = new Game()
-                {
-                    Name = "Nogglerfoggler"
-                };
-                var gameTwo = new Game()
-                {
-                    Name = "Dustbringer"
-                };
-                var gameThree = new Game()
-                {
-                    Name = "Snowmaw"
-                };
-
-                _context.Games.Add(gameOne);
-                _context.Games.Add(gameTwo);
-                _context.Games.Add(gameThree);
-                _context.SaveChanges();
-            }
+            _gamesRepository = gamesRepository;
         }
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Game>>> GetGames()
         {
-            return await _context.Games.ToListAsync();
+            return await _gamesRepository.FindAll();
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<Game>> GetGame(long id)
         {
-            var game = await _context.Games.FindAsync(id);
+            var game = await _gamesRepository.FindOne(g => g.Id == id);
 
             if (game == null)
             {
@@ -66,8 +40,7 @@ namespace TheWayHome.Controllers
         [HttpPost]
         public async Task<ActionResult<Game>> CreateGame(Game game)
         {
-            _context.Games.Add(game);
-            await _context.SaveChangesAsync();
+            await _gamesRepository.Create(game);
 
             return CreatedAtAction(nameof(GetGame), new { id = game.Id }, game);
         }
@@ -80,48 +53,22 @@ namespace TheWayHome.Controllers
                 return BadRequest();
             }
 
-            _context.Entry(game).State = EntityState.Modified;
-            await _context.SaveChangesAsync();
+            await _gamesRepository.Update(game);
 
             return NoContent();
-        }
-
-        [HttpPatch("{id}")]
-        public async Task<IActionResult> PatchGame(long id, JsonPatchDocument<Game> jsonPatchGame)
-        {
-            try
-            {
-                var game = await _context.Games.FindAsync(id);
-
-                if (game == null)
-                {
-                    return NotFound();
-                }
-
-                jsonPatchGame.ApplyTo(game);
-
-                _context.Games.Update(game);
-                await _context.SaveChangesAsync();
-
-                return NoContent();
-            }
-            catch { }
-
-            return BadRequest();
         }
 
         [HttpDelete("{id}")]
         public async Task<ActionResult<IEnumerable<Game>>> DeleteGame(long id)
         {
-            var game = await _context.Games.FindAsync(id);
+            var game = await _gamesRepository.FindOne(g => g.Id == id);
 
             if (game == null)
             {
                 return NotFound();
             }
 
-            _context.Games.Remove(game);
-            await _context.SaveChangesAsync();
+            await _gamesRepository.Delete(game);
 
             return NoContent();
         }

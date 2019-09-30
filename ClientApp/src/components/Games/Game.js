@@ -18,31 +18,34 @@ class Game extends Component {
         super(props);
 
         this.state = {
-            playerAlert: false
+            playerAlert: false,
+            playerAlertText: '',
         };
 
         this.signalRConnection = null;
         this.identity = null;
+        this.gameId = null;
 
         this.setupIdentity = this.setupIdentity.bind(this);
         this.setupSignalR = this.setupSignalR.bind(this);
 
         this.dismissPlayerAlert = this.dismissPlayerAlert.bind(this);
+
+        this.destroySignalR = this.destroySignalR.bind(this);
     }
 
     componentDidMount() {
         const { id } = this.props.match.params;
+        this.gameId = id;
 
-        this.props.getGame(id);
+        this.props.getGame(this.gameId);
 
         this.setupIdentity();
         this.setupSignalR();
-
-        this.signalRConnection.start();
     }
 
     componentWillUnmount() {
-        this.signalRConnection.stop();
+        this.destroySignalR();
     }
 
     setupIdentity() {
@@ -54,8 +57,15 @@ class Game extends Component {
             .withUrl('/hubs/GamesHub')
             .build();
 
-        this.signalRConnection.on("PLAYER_JOINED", (user) => {
-            this.setState({ playerAlert: true });
+        this.signalRConnection.on("PLAYER_JOINED", (userName) => {
+            this.setState({
+                playerAlertText: `A new challenger approaches! Please welcome, ${userName}!`,
+                playerAlert: true
+            });
+        });
+
+        this.signalRConnection.start().then(() => {
+            this.signalRConnection.invoke("JoinGame", this.identity, this.gameId);
         });
     }
 
@@ -63,11 +73,18 @@ class Game extends Component {
         this.setState({ playerAlert: false });
     }
 
+    destroySignalR() {
+        console.log(this.identity + ' ' + this.gameId);
+        this.signalRConnection.invoke("LeaveGame", this.identity, this.gameId).then(() => {
+            this.signalRConnection.stop();
+        });
+    }
+
     render() {
         return (
             <div>
                 <Alert color="info" isOpen={this.state.playerAlert} toggle={this.dismissPlayerAlert}>
-                    Another one bites the dust!
+                    {this.state.playerAlertText}
                 </Alert>
                 <div>
                     {this.props.game != null ? <p>{`${this.props.game.id}: ${this.props.game.name}`}</p> : <p>Loading</p>}

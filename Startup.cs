@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.Extensions.Configuration;
@@ -9,6 +8,8 @@ using Microsoft.EntityFrameworkCore;
 
 using TheWayHome.Models.Contexts;
 using TheWayHome.Hubs;
+using TheWayHome.Repositories;
+using TheWayHome.Repositories.Implementations;
 
 namespace TheWayHome
 {
@@ -28,6 +29,9 @@ namespace TheWayHome
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             services.AddSignalR();
             services.AddScoped<GamesHub>();
+
+            services.AddSingleton<IGamesRepository, GamesRepository>();
+            services.AddScoped(typeof(IGamesRepository), typeof(GamesRepository));
 
             // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration =>

@@ -11,7 +11,5 @@ namespace TheWayHome.Models.Contexts
         public GameContext(DbContextOptions<GameContext> options) : base(options) { }
 
         public DbSet<Game> Games { get; set; }
-
-        public DbSet<Player> Players { get; set; }
     }
 }

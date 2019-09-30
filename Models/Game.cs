@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
 
 namespace TheWayHome.Models
@@ -12,5 +10,12 @@ namespace TheWayHome.Models
 
         [Required(ErrorMessage = "Name is required")]
         public string Name { get; set; }
+
+        public List<Player> Players { get; set; }
+
+        public Game()
+        {
+            Players = new List<Player>();
+        }
     }
 }
