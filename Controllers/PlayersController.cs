@@ -1,11 +1,9 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 using TheWayHome.Models;
-using TheWayHome.Models.Contexts;
+using TheWayHome.Repositories;
 
 namespace TheWayHome.Controllers
 {
@@ -13,28 +11,23 @@ namespace TheWayHome.Controllers
     [ApiController]
     public class PlayersController : ControllerBase
     {
-        private readonly GameContext _context;
+        private readonly IPlayersRepository _playersRepository;
 
-        public PlayersController(GameContext context)
+        public PlayersController(IPlayersRepository playersRepository)
         {
-            _context = context;
+            _playersRepository = playersRepository;
         }
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Player>>> GetPlayers()
         {
-            return await _context.Games
-                .SelectMany(g => g.Players)
-                .Distinct()
-                .ToListAsync();
+            return await _playersRepository.FindAll();
         }
 
         [HttpGet("{identity}")]
         public async Task<ActionResult<Player>> GetPlayer(string identity)
         {
-            var player = await _context.Games
-                .SelectMany(g => g.Players)
-                .FirstOrDefaultAsync(p => p.Identity == identity);
+            var player = await _playersRepository.FindOne(p => p.Identity == identity);
 
             if (player == null)
             {
@@ -45,28 +38,15 @@ namespace TheWayHome.Controllers
         }
 
         [HttpGet("Game/{gameId}")]
-        public async Task<ActionResult<IEnumerable<Player>>> GetPlayersFromGame(long gameId)
+        public async Task<ActionResult<IEnumerable<Player>>> GetPlayersByGame(long gameId)
         {
-            var players = await _context.Games
-                .Where(g => g.Id == gameId)
-                .SelectMany(g => g.Players)
-                .ToListAsync();
-
-            if (players == null)
-            {
-                return NotFound();
-            }
-
-            return players;
+            return await _playersRepository.FindAllByGame(gameId);
         }
 
         [HttpGet("Game/{gameId}/{identity}")]
-        public async Task<ActionResult<Player>> GetPlayerFromGame(long gameId, string identity)
+        public async Task<ActionResult<Player>> GetPlayerByGame(long gameId, string identity)
         {
-            var player = await _context.Games
-                .Where(g => g.Id == gameId)
-                .SelectMany(g => g.Players)
-                .FirstOrDefaultAsync(p => p.Identity == identity);
+            var player = await _playersRepository.FindOneByGame(gameId, identity);
 
             if (player == null)
             {

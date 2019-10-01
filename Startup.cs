@@ -33,6 +33,9 @@ namespace TheWayHome
             services.AddSingleton<IGamesRepository, GamesRepository>();
             services.AddScoped(typeof(IGamesRepository), typeof(GamesRepository));
 
+            services.AddSingleton<IPlayersRepository, PlayersRepository>();
+            services.AddScoped(typeof(IPlayersRepository), typeof(PlayersRepository));
+
             // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
             {

@@ -17,5 +17,22 @@ namespace TheWayHome.Models
         {
             Players = new List<Player>();
         }
+
+        public override bool Equals(object obj)
+        {
+            if (obj == null || !GetType().Equals(obj.GetType()))
+            {
+                return false;
+            }
+
+            var game = (Game)obj;
+
+            return Id.Equals(game.Id);
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(Id, Name, Players);
+        }
     }
 }
