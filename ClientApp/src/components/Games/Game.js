@@ -74,7 +74,6 @@ class Game extends Component {
     }
 
     destroySignalR() {
-        console.log(this.identity + ' ' + this.gameId);
         this.signalRConnection.invoke("LeaveGame", this.identity, this.gameId).then(() => {
             this.signalRConnection.stop();
         });
