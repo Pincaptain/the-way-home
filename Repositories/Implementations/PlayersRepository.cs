@@ -15,6 +15,11 @@ namespace TheWayHome.Repositories.Implementations
     {
         private readonly GameContext _context;
 
+        public PlayersRepository(GameContext context)
+        {
+            _context = context;
+        }
+
         public Task<List<Player>> FindAll()
         {
             return _context.Games
