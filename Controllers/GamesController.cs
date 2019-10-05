@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 
 using TheWayHome.Models;
-using TheWayHome.Repositories;
+using TheWayHome.Services;
 
 namespace TheWayHome.Controllers
 {
@@ -11,23 +11,23 @@ namespace TheWayHome.Controllers
     [ApiController]
     public class GamesController : ControllerBase
     {
-        private readonly IGamesRepository _gamesRepository;
+        private readonly IGamesService _gamesService;
 
-        public GamesController(IGamesRepository gamesRepository)
+        public GamesController(IGamesService gamesService)
         {
-            _gamesRepository = gamesRepository;
+            _gamesService = gamesService;
         }
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Game>>> GetGames()
         {
-            return await _gamesRepository.FindAll();
+            return await _gamesService.FindAll();
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<Game>> GetGame(long id)
         {
-            var game = await _gamesRepository.FindOne(g => g.Id == id);
+            var game = await _gamesService.FindOne(g => g.Id == id);
 
             if (game == null)
             {
@@ -40,7 +40,7 @@ namespace TheWayHome.Controllers
         [HttpPost]
         public async Task<ActionResult<Game>> CreateGame(Game game)
         {
-            await _gamesRepository.Create(game);
+            await _gamesService.Create(game);
 
             return CreatedAtAction(nameof(GetGame), new { id = game.Id }, game);
         }
@@ -53,7 +53,7 @@ namespace TheWayHome.Controllers
                 return BadRequest();
             }
 
-            await _gamesRepository.Update(game);
+            await _gamesService.Update(game);
 
             return NoContent();
         }
@@ -61,14 +61,14 @@ namespace TheWayHome.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult<IEnumerable<Game>>> DeleteGame(long id)
         {
-            var game = await _gamesRepository.FindOne(g => g.Id == id);
+            var game = await _gamesService.FindOne(g => g.Id == id);
 
             if (game == null)
             {
                 return NotFound();
             }
 
-            await _gamesRepository.Delete(game);
+            await _gamesService.Delete(game);
 
             return NoContent();
         }

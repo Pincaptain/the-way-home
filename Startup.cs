@@ -10,6 +10,8 @@ using TheWayHome.Models.Contexts;
 using TheWayHome.Hubs;
 using TheWayHome.Repositories;
 using TheWayHome.Repositories.Implementations;
+using TheWayHome.Services;
+using TheWayHome.Services.Implementations;
 
 namespace TheWayHome
 {
@@ -32,9 +34,13 @@ namespace TheWayHome
 
             services.AddSingleton<IGamesRepository, GamesRepository>();
             services.AddScoped(typeof(IGamesRepository), typeof(GamesRepository));
+            services.AddSingleton<IGamesService, GamesService>();
+            services.AddScoped(typeof(IGamesService), typeof(GamesService));
 
             services.AddSingleton<IPlayersRepository, PlayersRepository>();
             services.AddScoped(typeof(IPlayersRepository), typeof(PlayersRepository));
+            services.AddSingleton<IPlayersService, PlayersService>();
+            services.AddScoped(typeof(IPlayersService), typeof(PlayersService));
 
             // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration =>

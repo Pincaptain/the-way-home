@@ -8,6 +8,7 @@
 
 const initialState = {
     games: [],
+    gamesLoading: true,
     game: null
 };
 
@@ -16,7 +17,8 @@ export default function (state = initialState, action) {
         case GET_GAMES:
             return {
                 ...state,
-                games: action.payload
+                games: action.payload,
+                gamesLoading: false
             };
         case GET_GAME:
             return {

@@ -3,13 +3,35 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
-import { Button, Modal, ModalBody, ModalHeader, ModalFooter, Form, Input, Label, FormGroup, FormText, FormFeedback, Table } from 'reactstrap';
+import {
+    Button,
+    Modal,
+    ModalBody,
+    ModalHeader,
+    ModalFooter,
+    Form,
+    Input,
+    Label,
+    FormGroup,
+    FormText,
+    FormFeedback,
+    Table,
+    Alert
+} from 'reactstrap';
+import { Toggle } from 'react-powerplug';
 
-import { getGames, createGame, updateGame, deleteGame } from '../../store/actions/Games';
+import {
+    getGames,
+    createGame,
+    updateGame,
+    deleteGame
+} from '../../store/actions/Games';
+import { isNil } from '../../extensions/Nil';
 
 class Games extends Component {
     static propTypes = {
         games: PropTypes.array.isRequired,
+        gamesLoading: PropTypes.bool.isRequired,
         getGames: PropTypes.func.isRequired,
         createGame: PropTypes.func.isRequired,
         updateGame: PropTypes.func.isRequired,
@@ -20,7 +42,7 @@ class Games extends Component {
         super(props);
 
         this.state = {
-            gameModal: false,
+            gamesAlert: true,
             editGameModal: false,
             gameForm: {
                 name: ''
@@ -37,7 +59,6 @@ class Games extends Component {
             }
         };
 
-        this.toggleGameModal = this.toggleGameModal.bind(this);
         this.toggleEditGameModal = this.toggleEditGameModal.bind(this);
 
         this.gameFormChange = this.gameFormChange.bind(this);
@@ -50,14 +71,12 @@ class Games extends Component {
         this.validateEditGameForm = this.validateEditGameForm.bind(this);
     }
 
-    toggleGameModal() {
-        this.setState(previousState => ({
-            gameModal: !previousState.gameModal
-        }));
+    componentDidMount() {
+        this.props.getGames();
     }
 
     toggleEditGameModal(game) {
-        if (game !== null) {
+        if (!isNil(game)) {
             this.setState(previousState => ({
                 editGameForm: {
                     ...previousState.editGameForm,
@@ -177,17 +196,24 @@ class Games extends Component {
 
         if (this.validateEditGameForm()) {
             this.props.updateGame(this.state.editGameForm);
-            this.toggleEditGameModal(null);
+            this.toggleEditGameModal();
         }
-    }
-
-    componentDidMount() {
-        this.props.getGames();
     }
 
     render() {
         return (
             <div className='table-responsive'>
+                {
+                    this.props.gamesLoading ?
+                        <Alert color="info">Patience is a virtue.</Alert> :
+                        <Toggle initial={true}>
+                            {({ on, toggle }) => (
+                                <Alert color="success" isOpen={on} toggle={toggle}>
+                                    There are no secrets to success. It is the result of preparation, hard work, and learning from failure.
+                                </Alert>
+                            )}
+                        </Toggle>
+                }
                 <Table striped hover>
                     <thead>
                         <tr>
@@ -207,46 +233,52 @@ class Games extends Component {
                                     <Button color='link'><Link to={'/games/' + game.id}>Join</Link></Button>
                                 </td>
                                 <td>
-                                    <Button color='link' onClick={(event) => this.props.deleteGame(game.id)}>Delete</Button>
+                                    <Button color='link' onClick={() => this.props.deleteGame(game.id)}>Delete</Button>
                                 </td>
                                 <td>
-                                    <Button color='link' onClick={(event) => this.toggleEditGameModal(game)}>Edit</Button>
+                                    <Button color='link' onClick={() => this.toggleEditGameModal(game)}>Update</Button>
                                 </td>
                             </tr>
                         )}
                     </tbody>
                 </Table>
                 <div>
-                    <Button color='link' onClick={this.toggleGameModal}>Create a game</Button>
-                    <Modal isOpen={this.state.gameModal} toggle={this.toggleGameModal} className={this.props.className}>
-                        <ModalHeader toggle={this.toggleGameModal}>Create a game</ModalHeader>
-                        <ModalBody>
-                            <Form>
-                                <FormGroup>
-                                    <Label for='name'>Name</Label>
-                                    {
-                                        this.state.gameFormErrors.name === null ?
-                                            <Input name='name' type='text' value={this.state.gameForm.name} onChange={this.gameFormChange} /> :
-                                            this.state.gameFormErrors.name === '' ?
-                                                <Input valid name='name' type='text' value={this.state.gameForm.name} onChange={this.gameFormChange} /> :
-                                                <Input invalid name='name' type='text' value={this.state.gameForm.name} onChange={this.gameFormChange} />
-                                    }
-                                    <FormText>Enter the name of your game room</FormText>
-                                    <FormFeedback>{this.state.gameFormErrors.name}</FormFeedback>
-                                </FormGroup>
-                            </Form>
-                        </ModalBody>
-                        <ModalFooter>
-                            {
-                                this.validateGameForm() ?
-                                    <Button color='secondary' type='submit' onClick={(event) => this.gameFormSubmit(event)}>Create</Button> :
-                                    <Button color='secondary' disabled outline>Create</Button>
-                            }
-                            <Button color='default' onClick={this.toggleGameModal}>Cancel</Button>
-                        </ModalFooter>
-                    </Modal>
-                    <Modal isOpen={this.state.editGameModal} toggle={this.toggleEditGameModal} className={this.props.className}>
-                        <ModalHeader toggle={this.toggleEditGameModal}>Create a game</ModalHeader>
+                    <Toggle initial={false}>
+                        {({ on, toggle }) => (
+                            <div>
+                                <Button color='link' onClick={toggle}>Create a game</Button>
+                                <Modal isOpen={on} toggle={toggle} className={this.props.className}>
+                                    <ModalHeader>Create a game</ModalHeader>
+                                    <ModalBody>
+                                        <Form>
+                                            <FormGroup>
+                                                <Label for='name'>Name</Label>
+                                                {
+                                                    this.state.gameFormErrors.name === null ?
+                                                        <Input name='name' type='text' value={this.state.gameForm.name} onChange={this.gameFormChange} /> :
+                                                        this.state.gameFormErrors.name === '' ?
+                                                            <Input valid name='name' type='text' value={this.state.gameForm.name} onChange={this.gameFormChange} /> :
+                                                            <Input invalid name='name' type='text' value={this.state.gameForm.name} onChange={this.gameFormChange} />
+                                                }
+                                                <FormText>Enter the name of your game room</FormText>
+                                                <FormFeedback>{this.state.gameFormErrors.name}</FormFeedback>
+                                            </FormGroup>
+                                        </Form>
+                                    </ModalBody>
+                                    <ModalFooter>
+                                        {
+                                            this.validateGameForm() ?
+                                                <Button color='secondary' type='submit' onClick={(event) => this.gameFormSubmit(event)}>Create</Button> :
+                                                <Button color='secondary' disabled outline>Create</Button>
+                                        }
+                                        <Button color='default' onClick={toggle}>Cancel</Button>
+                                    </ModalFooter>
+                                </Modal>
+                            </div>
+                        )}
+                    </Toggle>
+                    <Modal isOpen={this.state.editGameModal} toggle={() => this.toggleEditGameModal()} className={this.props.className}>
+                        <ModalHeader toggle={() => this.toggleEditGameModal()}>Update a game</ModalHeader>
                         <ModalBody>
                             <Form>
                                 <FormGroup>
@@ -269,7 +301,7 @@ class Games extends Component {
                                     <Button color='secondary' type='submit' onClick={(event) => this.editGameFormSubmit(event)}>Update</Button> :
                                     <Button color='secondary' disabled outline>Update</Button>
                             }
-                            <Button color='default' onClick={this.toggleEditGameModal}>Cancel</Button>
+                            <Button color='default' onClick={() => this.toggleEditGameModal()}>Cancel</Button>
                         </ModalFooter>
                     </Modal>
                 </div>
@@ -279,7 +311,8 @@ class Games extends Component {
 }
 
 const mapStateToProps = state => ({
-    games: state.games.games
+    games: state.games.games,
+    gamesLoading: state.games.gamesLoading
 });
 
 export default connect(mapStateToProps, { getGames, createGame, updateGame, deleteGame })(Games)
