@@ -1,29 +1,26 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.SignalR;
 
-using TheWayHome.Repositories;
+using TheWayHome.Services;
 
 namespace TheWayHome.Hubs
 {
     public class GamesHub : Hub
     {
-        private readonly IPlayersRepository _playersRepository;
+        private readonly IPlayersService PlayersService;
 
-        public GamesHub(IPlayersRepository playersRepository)
-        {
-            _playersRepository = playersRepository;
-        }
+        public GamesHub(IPlayersService playersService) => PlayersService = playersService;
 
         public async Task JoinGame(string identity, long gameId)
         {
-            var player = await _playersRepository.Create(gameId, identity);
+            var player = await PlayersService.CreatePlayer(gameId, identity);
 
             await Clients.All.SendAsync("PLAYER_JOINED", player.Name);
         }
 
         public async Task LeaveGame(string identity, long gameId)
         {
-            var player = await _playersRepository.Delete(gameId, identity);
+            var player = await PlayersService.DeletePlayer(gameId, identity);
 
             await Clients.All.SendAsync("PLAYER_LEFT", player.Name);
         }

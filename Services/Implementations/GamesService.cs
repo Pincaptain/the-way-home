@@ -9,41 +9,36 @@ namespace TheWayHome.Services.Implementations
 {
     public class GamesService : IGamesService
     {
-        private readonly IGamesRepository _gamesRepository;
+        private readonly IGamesRepository GamesRepository;
 
         public GamesService(IGamesRepository gamesRepository)
         {
-            _gamesRepository = gamesRepository;
+            GamesRepository = gamesRepository;
         }
 
-        public Task<List<Game>> FindAll()
+        public Task<List<Game>> GetGames()
         {
-            return _gamesRepository.FindAll();
+            return GamesRepository.FindAll();
         }
 
-        public Task<List<Game>> FindByCondition(Expression<Func<Game, bool>> condition)
+        public Task<Game> GetGame(Expression<Func<Game, bool>> condition)
         {
-            return _gamesRepository.FindByCondition(condition);
+            return GamesRepository.FindOne(condition);
         }
 
-        public Task<Game> FindOne(Expression<Func<Game, bool>> condition)
+        public Task<Game> CreateGame(Game game)
         {
-            return _gamesRepository.FindOne(condition);
+            return GamesRepository.Create(game);
         }
 
-        public Task<Game> Create(Game game)
+        public Task<bool> UpdateGame(Game game)
         {
-            return _gamesRepository.Create(game);
+            return GamesRepository.Update(game);
         }
 
-        public Task<bool> Update(Game game)
+        public Task<bool> DeleteGame(Game game)
         {
-            return _gamesRepository.Update(game);
-        }
-
-        public Task<bool> Delete(Game game)
-        {
-            return _gamesRepository.Delete(game);
+            return GamesRepository.Delete(game);
         }
     }
 }

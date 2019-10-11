@@ -10,46 +10,41 @@ namespace TheWayHome.Services.Implementations
 {
     public class PlayersService : IPlayersService
     {
-        private readonly IPlayersRepository _playersRepository;
+        private readonly IPlayersRepository PlayersRepository;
 
         public PlayersService(IPlayersRepository playersRepository)
         {
-            _playersRepository = playersRepository;
+            PlayersRepository = playersRepository;
         }
 
-        public Task<List<Player>> FindAll()
+        public Task<List<Player>> GetPlayers()
         {
-            return _playersRepository.FindAll();
+            return PlayersRepository.FindAll();
         }
 
-        public Task<List<Player>> FindByCondition(Expression<Func<Player, bool>> condition)
+        public Task<List<Player>> GetPlayersByGame(long gameId)
         {
-            return _playersRepository.FindByCondition(condition);
+            return PlayersRepository.FindByGame(gameId);
         }
 
-        public Task<Player> FindOne(Expression<Func<Player, bool>> condition)
+        public Task<Player> GetPlayer(Expression<Func<Player, bool>> condition)
         {
-            return _playersRepository.FindOne(condition);
+            return PlayersRepository.FindOne(condition);
         }
 
-        public Task<List<Player>> FindAllByGame(long gameId)
+        public Task<Player> GetPlayerByGame(long gameId, string identity)
         {
-            return _playersRepository.FindAllByGame(gameId);
+            return PlayersRepository.FindOneByGame(gameId, identity);
         }
 
-        public Task<Player> FindOneByGame(long gameId, string identity)
+        public Task<Player> CreatePlayer(long gameId, string identity)
         {
-            return _playersRepository.FindOneByGame(gameId, identity);
+            return PlayersRepository.Create(gameId, identity);
         }
 
-        public Task<Player> Create(long gameId, string identity)
+        public Task<Player> DeletePlayer(long gameId, string identity)
         {
-            return _playersRepository.Create(gameId, identity);
-        }
-
-        public Task<Player> Delete(long gameId, string identity)
-        {
-            return _playersRepository.Delete(gameId, identity);
+            return PlayersRepository.Delete(gameId, identity);
         }
     }
 }

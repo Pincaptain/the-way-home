@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
@@ -10,16 +9,14 @@ namespace TheWayHome.Services
 {
     public interface IGamesService
     {
-        Task<List<Game>> FindAll();
+        Task<List<Game>> GetGames();
 
-        Task<List<Game>> FindByCondition(Expression<Func<Game, bool>> condition);
+        Task<Game> GetGame(Expression<Func<Game, bool>> condition);
 
-        Task<Game> FindOne(Expression<Func<Game, bool>> condition);
+        Task<Game> CreateGame(Game game);
 
-        Task<Game> Create(Game game);
+        Task<bool> UpdateGame(Game game);
 
-        Task<bool> Update(Game game);
-
-        Task<bool> Delete(Game game);
+        Task<bool> DeleteGame(Game game);
     }
 }

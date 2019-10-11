@@ -9,18 +9,16 @@ namespace TheWayHome.Services
 {
     public interface IPlayersService
     {
-        Task<List<Player>> FindAll();
+        Task<List<Player>> GetPlayers();
 
-        Task<List<Player>> FindByCondition(Expression<Func<Player, bool>> condition);
+        Task<List<Player>> GetPlayersByGame(long gameId);
 
-        Task<Player> FindOne(Expression<Func<Player, bool>> condition);
+        Task<Player> GetPlayer(Expression<Func<Player, bool>> condition);
 
-        Task<List<Player>> FindAllByGame(long gameId);
+        Task<Player> GetPlayerByGame(long gameId, string identity);
 
-        Task<Player> FindOneByGame(long gameId, string identity);
+        Task<Player> CreatePlayer(long gameId, string identity);
 
-        Task<Player> Create(long gameId, string identity);
-
-        Task<Player> Delete(long gameId, string identity);
+        Task<Player> DeletePlayer(long gameId, string identity);
     }
 }

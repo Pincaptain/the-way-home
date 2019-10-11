@@ -12,13 +12,13 @@ namespace TheWayHome.Repositories.Implementations
 {
     public class GamesRepository : IGamesRepository
     {
-        private readonly GameContext _context;
+        private readonly GameContext Context;
 
         public GamesRepository(GameContext context)
         {
-            _context = context;
+            Context = context;
 
-            if (_context.Games.Count() == 0)
+            if (Context.Games.Count() == 0)
             {
                 var gameOne = new Game()
                 {
@@ -33,52 +33,57 @@ namespace TheWayHome.Repositories.Implementations
                     Name = "Game of Chairs"
                 };
 
-                _context.Games.Add(gameOne);
-                _context.Games.Add(gameTwo);
-                _context.Games.Add(gameThree);
-                _context.SaveChanges();
+                Context.Games.Add(gameOne);
+                Context.Games.Add(gameTwo);
+                Context.Games.Add(gameThree);
+                Context.SaveChanges();
             }
         }
 
         public Task<List<Game>> FindAll()
         {
-            return _context.Games.ToListAsync();
+            return Context.Games.ToListAsync();
         }
 
         public Task<List<Game>> FindByCondition(Expression<Func<Game, bool>> condition)
         {
-            return _context.Games
+            return Context.Games
                 .Where(condition)
                 .ToListAsync();
         }
 
         public Task<Game> FindOne(Expression<Func<Game, bool>> condition)
         {
-            return _context.Games.FirstOrDefaultAsync(condition);
+            return Context.Games.FirstOrDefaultAsync(condition);
         }
 
         public async Task<Game> Create(Game game)
         {
-            _context.Games.Add(game);
-            await _context.SaveChangesAsync();
+            Context.Games.Add(game);
+            await SaveChanges();
 
             return game;
         }
 
         public async Task<bool> Update(Game game)
         {
-            _context.Entry(game).State = EntityState.Modified;
-            await _context.SaveChangesAsync();
+            Context.Entry(game).State = EntityState.Modified;
+            await SaveChanges();
 
             return true;
         }
 
         public async Task<bool> Delete(Game game)
         {
-            _context.Games.Remove(game);
-            await _context.SaveChangesAsync();
+            Context.Games.Remove(game);
+            await SaveChanges();
 
             return true;
+        }
+
+        public Task<int> SaveChanges()
+        {
+            return Context.SaveChangesAsync();
         }
     }
 }

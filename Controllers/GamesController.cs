@@ -11,49 +11,53 @@ namespace TheWayHome.Controllers
     [ApiController]
     public class GamesController : ControllerBase
     {
-        private readonly IGamesService _gamesService;
+        private readonly IGamesService GamesService;
 
-        public GamesController(IGamesService gamesService)
-        {
-            _gamesService = gamesService;
-        }
+        public GamesController(IGamesService gamesService) => GamesService = gamesService;
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Game>>> GetGames()
         {
-            return await _gamesService.FindAll();
+            var parameters = HttpContext.Request.Query;
+
+            if (parameters.Count == 0)
+            {
+                return await GamesService.GetGames();
+            }
+
+            return NoContent();
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<Game>> GetGame(long id)
         {
-            var game = await _gamesService.FindOne(g => g.Id == id);
+            var game = await GamesService.GetGame(g => g.Id == id);
 
             if (game == null)
             {
                 return NotFound();
             }
-
+            
             return game;
         }
 
         [HttpPost]
         public async Task<ActionResult<Game>> CreateGame(Game game)
         {
-            await _gamesService.Create(game);
+            await GamesService.CreateGame(game);
 
             return CreatedAtAction(nameof(GetGame), new { id = game.Id }, game);
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutGame(long id, Game game)
+        public async Task<IActionResult> UpdateGame(long id, Game game)
         {
             if (id != game.Id)
             {
                 return BadRequest();
             }
 
-            await _gamesService.Update(game);
+            await GamesService.UpdateGame(game);
 
             return NoContent();
         }
@@ -61,14 +65,14 @@ namespace TheWayHome.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult<IEnumerable<Game>>> DeleteGame(long id)
         {
-            var game = await _gamesService.FindOne(g => g.Id == id);
+            var game = await GamesService.GetGame(g => g.Id == id);
 
             if (game == null)
             {
                 return NotFound();
             }
 
-            await _gamesService.Delete(game);
+            await GamesService.DeleteGame(game);
 
             return NoContent();
         }

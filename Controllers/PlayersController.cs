@@ -11,23 +11,20 @@ namespace TheWayHome.Controllers
     [ApiController]
     public class PlayersController : ControllerBase
     {
-        private readonly IPlayersService _playersService;
+        private readonly IPlayersService PlayersService;
 
-        public PlayersController(IPlayersService playersService)
-        {
-            _playersService = playersService;
-        }
+        public PlayersController(IPlayersService playersService) => PlayersService = playersService;
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Player>>> GetPlayers()
         {
-            return await _playersService.FindAll();
+            return await PlayersService.GetPlayers();
         }
 
         [HttpGet("{identity}")]
         public async Task<ActionResult<Player>> GetPlayer(string identity)
         {
-            var player = await _playersService.FindOne(p => p.Identity == identity);
+            var player = await PlayersService.GetPlayer(p => p.Identity == identity);
 
             if (player == null)
             {
@@ -40,13 +37,13 @@ namespace TheWayHome.Controllers
         [HttpGet("Game/{gameId}")]
         public async Task<ActionResult<IEnumerable<Player>>> GetPlayersByGame(long gameId)
         {
-            return await _playersService.FindAllByGame(gameId);
+            return await PlayersService.GetPlayersByGame(gameId);
         }
 
         [HttpGet("Game/{gameId}/{identity}")]
         public async Task<ActionResult<Player>> GetPlayerByGame(long gameId, string identity)
         {
-            var player = await _playersService.FindOneByGame(gameId, identity);
+            var player = await PlayersService.GetPlayerByGame(gameId, identity);
 
             if (player == null)
             {

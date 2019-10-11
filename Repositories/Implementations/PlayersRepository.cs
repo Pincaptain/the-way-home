@@ -13,46 +13,43 @@ namespace TheWayHome.Repositories.Implementations
 {
     public class PlayersRepository : IPlayersRepository
     {
-        private readonly GameContext _context;
+        private readonly GameContext Context;
 
-        public PlayersRepository(GameContext context)
-        {
-            _context = context;
-        }
+        public PlayersRepository(GameContext context) => Context = context;
 
         public Task<List<Player>> FindAll()
         {
-            return _context.Games
+            return Context.Games
                 .SelectMany(g => g.Players)
                 .ToListAsync();
         }
 
         public Task<List<Player>> FindByCondition(Expression<Func<Player, bool>> condition)
         {
-            return _context.Games
+            return Context.Games
                 .SelectMany(g => g.Players)
                 .Where(condition)
                 .ToListAsync();
         }
 
-        public Task<Player> FindOne(Expression<Func<Player, bool>> condition)
+        public Task<List<Player>> FindByGame(long gameId)
         {
-            return _context.Games
-                .SelectMany(g => g.Players)
-                .FirstOrDefaultAsync(condition);
-        }
-
-        public Task<List<Player>> FindAllByGame(long gameId)
-        {
-            return _context.Games
+            return Context.Games
                 .Where(g => g.Id == gameId)
                 .SelectMany(g => g.Players)
                 .ToListAsync();
         }
 
+        public Task<Player> FindOne(Expression<Func<Player, bool>> condition)
+        {
+            return Context.Games
+                .SelectMany(g => g.Players)
+                .FirstOrDefaultAsync(condition);
+        }
+
         public Task<Player> FindOneByGame(long gameId, string identity)
         {
-            return _context.Games
+            return Context.Games
                 .Where(g => g.Id == gameId)
                 .SelectMany(g => g.Players)
                 .FirstOrDefaultAsync(p => p.Identity == identity);
@@ -66,26 +63,28 @@ namespace TheWayHome.Repositories.Implementations
                 Name = NameGenerator.GenerateName()
             };
 
-            var game = await _context.Games.FindAsync(gameId);
+            var game = await Context.Games.FindAsync(gameId);
 
             game.Players.Add(player);
-            await _context.SaveChangesAsync();
+            await SaveChanges();
 
             return player;
         }
 
         public async Task<Player> Delete(long gameId, string identity)
         {
-            var game = await _context.Games.FindAsync(gameId);
-            var player = await _context.Games
+            var game = await Context.Games.FindAsync(gameId);
+            var player = await Context.Games
                 .Where(g => g.Id == gameId)
                 .SelectMany(g => g.Players)
                 .FirstOrDefaultAsync(p => p.Identity == identity);
 
             game.Players.Remove(player);
-            await _context.SaveChangesAsync();
+            await SaveChanges();
 
             return player;
         }
+
+        public Task<int> SaveChanges() => Context.SaveChangesAsync();
     }
 }
