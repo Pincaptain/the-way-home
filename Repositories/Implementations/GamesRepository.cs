@@ -52,6 +52,15 @@ namespace TheWayHome.Repositories.Implementations
                 .ToListAsync();
         }
 
+        public Task<List<Game>> FindByOffset(Expression<Func<Game, bool>> condition, int offset, int take)
+        {
+            return Context.Games
+                .Where(condition)
+                .Skip(offset)
+                .Take(take)
+                .ToListAsync();
+        }
+
         public Task<Game> FindOne(Expression<Func<Game, bool>> condition)
         {
             return Context.Games.FirstOrDefaultAsync(condition);

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
@@ -16,9 +17,25 @@ namespace TheWayHome.Services.Implementations
             GamesRepository = gamesRepository;
         }
 
-        public Task<List<Game>> GetGames()
+        public Task<List<Game>> GetGames(IQueryCollection parameters = null)
         {
-            return GamesRepository.FindAll();
+            if (parameters == null || parameters.Count == 0)
+            {
+                return GamesRepository.FindAll();
+            }
+
+            var search = "";
+            var offset = 0;
+            var take = 5;
+
+            if (parameters.ContainsKey(nameof(search))) search = parameters[nameof(search)].ToString().ToLower();
+            if (parameters.ContainsKey(nameof(offset))) int.TryParse(parameters[nameof(offset)], out offset);
+            if (parameters.ContainsKey(nameof(take))) int.TryParse(parameters[nameof(take)], out take);
+
+            Expression<Func<Game, bool>> condition = 
+                g => g.Name.ToLower().Contains(search);
+
+            return GamesRepository.FindByOffset(condition, offset, take);
         }
 
         public Task<Game> GetGame(Expression<Func<Game, bool>> condition)

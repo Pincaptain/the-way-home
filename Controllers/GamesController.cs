@@ -20,12 +20,7 @@ namespace TheWayHome.Controllers
         {
             var parameters = HttpContext.Request.Query;
 
-            if (parameters.Count == 0)
-            {
-                return await GamesService.GetGames();
-            }
-
-            return NoContent();
+            return await GamesService.GetGames(parameters);
         }
 
         [HttpGet("{id}")]
