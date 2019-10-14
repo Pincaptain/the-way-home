@@ -12,10 +12,7 @@ namespace TheWayHome.Services.Implementations
     {
         private readonly IPlayersRepository PlayersRepository;
 
-        public PlayersService(IPlayersRepository playersRepository)
-        {
-            PlayersRepository = playersRepository;
-        }
+        public PlayersService(IPlayersRepository playersRepository) => PlayersRepository = playersRepository;
 
         public Task<List<Player>> GetPlayers()
         {

@@ -3,8 +3,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+
 using TheWayHome.Models;
 using TheWayHome.Repositories;
+using TheWayHome.Extensions;
 
 namespace TheWayHome.Services.Implementations
 {
@@ -12,10 +14,7 @@ namespace TheWayHome.Services.Implementations
     {
         private readonly IGamesRepository GamesRepository;
 
-        public GamesService(IGamesRepository gamesRepository)
-        {
-            GamesRepository = gamesRepository;
-        }
+        public GamesService(IGamesRepository gamesRepository) => GamesRepository = gamesRepository;
 
         public Task<List<Game>> GetGames(IQueryCollection parameters = null)
         {
@@ -24,13 +23,7 @@ namespace TheWayHome.Services.Implementations
                 return GamesRepository.FindAll();
             }
 
-            var search = "";
-            var offset = 0;
-            var take = 5;
-
-            if (parameters.ContainsKey(nameof(search))) search = parameters[nameof(search)].ToString().ToLower();
-            if (parameters.ContainsKey(nameof(offset))) int.TryParse(parameters[nameof(offset)], out offset);
-            if (parameters.ContainsKey(nameof(take))) int.TryParse(parameters[nameof(take)], out take);
+            FiltersBuilder.GamesFiltersBuilder(parameters, out string search, out int offset, out int take);
 
             Expression<Func<Game, bool>> condition = 
                 g => g.Name.ToLower().Contains(search);

@@ -13,10 +13,7 @@ namespace TheWayHome.Models
 
         public List<Player> Players { get; set; }
 
-        public Game()
-        {
-            Players = new List<Player>();
-        }
+        public Game() => Players = new List<Player>();
 
         public override bool Equals(object obj)
         {
