@@ -3,9 +3,9 @@ import { Route } from 'react-router';
 
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 
-import Layout from './Scenes/Layout';
+import Layout from './scenes/Layout';
 import Home from './components/Default/Home';
-import Games from './Scenes/Games';
+import Games from './components/Games/Games';
 import Game from './components/Games/Game';
 
 const theme = createMuiTheme({

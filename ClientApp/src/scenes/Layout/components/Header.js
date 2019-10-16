@@ -1,6 +1,5 @@
 ﻿import React from 'react';
-import { Link } from 'react-router-dom';
-import {NavLink} from 'reactstrap';
+import { NavLink, Link } from 'react-router-dom';
 
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
@@ -10,15 +9,32 @@ import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 
-const useStyles = makeStyles(theme => ({
+
+const useStyles = makeStyles(theme => ({    
     root: {
         flexGrow: 1,
     },
     menuButton: {
         marginRight: theme.spacing(2),
+        
     },
     title: {
         flexGrow: 1,
+        textDecoration:'none',
+        color:'white',
+        '&:hover':{
+            textDecoration:'none',
+            color:'white',
+        },
+    },
+    button:{
+        color:'white',
+        '&:hover':{
+            color:'white',
+        },
+        '& a:hover':{
+            color:'white',
+        },
     },
 }));
 
@@ -32,18 +48,12 @@ export default function Header() {
                     <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
                         <MenuIcon />
                     </IconButton>
-                    <Typography variant="h6" className={classes.title}>
-                       <NavLink tag={Link}  className="text-white" to="/"> The Way Home</NavLink> 
+                    <Typography variant="h6" className={classes.title} color="inherit" component={Link} to="/" exact >
+                            The Way Home
                     </Typography>
-                    <NavLink tag={Link} className="text-white"  to="/games">
-                        <Button color="inherit">Play</Button>
-                    </NavLink> 
-                    <NavLink tag={Link} className="text-white" to="/about">
-                        <Button color="inherit">Rules</Button>
-                    </NavLink> 
-                    <NavLink tag={Link} className="text-white" to="/news">
-                        <Button color="inherit">News</Button>
-                    </NavLink> 
+                    <Button className={classes.button} color="inherit" component={NavLink} to="/games" exact >Play </Button>
+                    <Button className={classes.button} color="inherit" component={NavLink} to="/about" exact >Rules</Button>
+                    <Button className={classes.button} color="inherit" component={NavLink} to="/news" exact  >News</Button>
                 </Toolbar>
             </AppBar>
         </div>
