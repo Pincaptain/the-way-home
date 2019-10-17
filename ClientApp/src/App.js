@@ -1,10 +1,13 @@
 import React from 'react';
 import { Route } from 'react-router';
 
-import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
+import {
+    createMuiTheme,
+    MuiThemeProvider
+} from '@material-ui/core/styles';
 
 import Layout from './scenes/Layout';
-import Home from './components/Default/Home';
+import Home from './scenes/Home';
 import Games from './components/Games/Games';
 import Game from './components/Games/Game';
 

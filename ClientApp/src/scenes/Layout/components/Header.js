@@ -1,5 +1,8 @@
 ﻿import React from 'react';
-import { NavLink, Link } from 'react-router-dom';
+import {
+    NavLink,
+    Link
+} from 'react-router-dom';
 
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
@@ -49,11 +52,11 @@ export default function Header() {
                         <MenuIcon />
                     </IconButton>
                     <Typography variant="h6" className={classes.title} color="inherit" component={Link} to="/" exact >
-                            The Way Home
+                        The Way Home
                     </Typography>
-                    <Button className={classes.button} color="inherit" component={NavLink} to="/games" exact >Play </Button>
-                    <Button className={classes.button} color="inherit" component={NavLink} to="/about" exact >Rules</Button>
-                    <Button className={classes.button} color="inherit" component={NavLink} to="/news" exact  >News</Button>
+                    <Button className={classes.button} color="inherit" component={NavLink} to="/games">Play </Button>
+                    <Button className={classes.button} color="inherit" component={NavLink} to="/about">Rules </Button>
+                    <Button className={classes.button} color="inherit" component={NavLink} to="/news">News</Button>
                 </Toolbar>
             </AppBar>
         </div>
