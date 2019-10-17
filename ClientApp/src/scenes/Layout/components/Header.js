@@ -1,8 +1,5 @@
 ﻿import React from 'react';
-import {
-    NavLink,
-    Link
-} from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
@@ -30,15 +27,24 @@ const useStyles = makeStyles(theme => ({
             color:'white',
         },
     },
-    button:{
+    navLink: {
         color:'white',
-        '&:hover':{
+        '&:hover': {
             color:'white',
         },
-        '& a:hover':{
+        '& a:hover': {
             color:'white',
         },
     },
+    navLinkActive: {
+        color: 'lightgray',
+        '&:hover': {
+            color: 'lightgray',
+        },
+        '& a:hover': {
+            color: 'lightgray',
+        },
+    }
 }));
 
 export default function Header() {
@@ -51,12 +57,18 @@ export default function Header() {
                     <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
                         <MenuIcon />
                     </IconButton>
-                    <Typography variant="h6" className={classes.title} color="inherit" component={Link} to="/" exact >
+                    <Typography variant="h6" className={classes.title} color="inherit" component={NavLink} to="/">
                         The Way Home
                     </Typography>
-                    <Button className={classes.button} color="inherit" component={NavLink} to="/games">Play </Button>
-                    <Button className={classes.button} color="inherit" component={NavLink} to="/about">Rules </Button>
-                    <Button className={classes.button} color="inherit" component={NavLink} to="/news">News</Button>
+                    <Button className={classes.navLink} activeClassName={classes.navLinkActive} color="inherit" component={NavLink} to="/games">
+                        Play 
+                    </Button>
+                    <Button className={classes.navLink} activeClassName={classes.navLinkActive} color="inherit" component={NavLink} to="/about">
+                        Rules 
+                    </Button>
+                    <Button className={classes.navLink} activeClassName={classes.navLinkActive} color="inherit" component={NavLink} to="/news">
+                        News
+                    </Button>
                 </Toolbar>
             </AppBar>
         </div>
