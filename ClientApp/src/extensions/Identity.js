@@ -10,7 +10,7 @@ export const identity = () => {
     }
 
     return identity;
-}
+};
 
 export const createIdentity = () => {
     let identity = uuid.v4();
@@ -20,8 +20,8 @@ export const createIdentity = () => {
     });
 
     return identity;
-}
+};
 
 export const destroyIdentity = () => {
     cookie.remove('identity');
-}
+};

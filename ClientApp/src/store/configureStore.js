@@ -30,4 +30,4 @@ export default function configureStore (history, initialState) {
         initialState,
         compose(applyMiddleware(...middleware), ...enhancers)
     );
-}
+};

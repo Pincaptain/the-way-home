@@ -8,7 +8,7 @@ import {
 
 import Layout from './scenes/Layout';
 import Home from './scenes/Home';
-import Games from './components/Games/Games';
+import Games from './scenes/Games';
 import Game from './components/Games/Game';
 
 const theme = createMuiTheme({
@@ -17,15 +17,15 @@ const theme = createMuiTheme({
             light: '#78909c',
             main: '#607d8b',
             dark: '#455a64',
-            contrastText: '#fff',
+            contrastText: '#fff'
         },
         secondary: {
             light: '#8d6e63',
             main: '#795548',
             dark: '#5d4037',
-            contrastText: '#000',
+            contrastText: '#fff'
         },
-    },
+    }
 });
 
 export default () => (

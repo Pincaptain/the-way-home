@@ -25,7 +25,6 @@
 
   <ItemGroup>
     <Folder Include="ClientApp\src\scenes\Home\" />
-    <Folder Include="ClientApp\src\scenes\Games\" />
     <Folder Include="ClientApp\src\scenes\Game\" />
   </ItemGroup>
 

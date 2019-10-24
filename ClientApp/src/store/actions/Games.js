@@ -36,7 +36,7 @@ export const getGame = (id) => dispatch => {
         .catch(error => {
             console.log(error);
         });
-}
+};
 
 export const createGame = (game) => dispatch => {
     axios
@@ -68,7 +68,7 @@ export const updateGame = (game) => dispatch => {
         .catch(error => {
             console.log(error);
         });
-}
+};
 
 export const deleteGame = (id) => dispatch => {
     axios
@@ -84,4 +84,4 @@ export const deleteGame = (id) => dispatch => {
         .catch(error => {
             console.log(error);
         });
-}
+};
