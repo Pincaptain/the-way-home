@@ -14,8 +14,8 @@ import {
     Button
 } from '@material-ui/core';
 
-import { isEmpty } from '../../../extensions/Empty';
-import { createGame } from '../../../store/actions/Games';
+import { isEmpty } from '../../../../extensions/Empty';
+import { createGame } from '../../../../store/actions/Games';
 
 class GameCreateForm extends Component {
     static propTypes = {

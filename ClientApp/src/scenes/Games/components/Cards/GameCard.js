@@ -8,10 +8,10 @@ import {
     CardActions
 } from '@material-ui/core';
 
-import GameDeleteButton from './GameDeleteButton';
-import GameJoinButton from './GameJoinButton';
-import GameUpdateButton from './GameUpdateButton';
-import generateDescription from '../../../extensions/DescriptionGenerator';
+import GameDeleteButton from '../Buttons/GameDeleteButton';
+import GameJoinButton from '../Buttons/GameJoinButton';
+import GameUpdateButton from '../Buttons/GameUpdateButton';
+import { generateDescription } from '../../../../extensions/DescriptionGenerator';
 
 const useStyles = makeStyles({
     card: {

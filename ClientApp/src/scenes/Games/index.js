@@ -2,8 +2,8 @@
 
 import { Box } from '@material-ui/core';
 
-import GamesGrid from './components/GamesGrid';
-import GameCreateButton from './components/GameCreateButton';
+import GamesLoader from './components/Loaders/GamesLoader';
+import GameCreateButton from './components/Buttons/GameCreateButton';
 
 class Games extends Component {
     render() {
@@ -11,7 +11,7 @@ class Games extends Component {
             <div>
                 <Box m={5}>
                     <GameCreateButton />
-                    <GamesGrid />
+                    <GamesLoader />
                 </Box>
             </div>
         );

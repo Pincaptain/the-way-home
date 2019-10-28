@@ -1,10 +1,10 @@
 ﻿import React from 'react';
 
 import { Toggle } from 'react-powerplug';
-import { makeStyles, withStyles } from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles';
 import {
-    Fab,
     Typography,
+    Button,
     IconButton,
     Dialog,
     DialogContent,
@@ -12,21 +12,9 @@ import {
 } from '@material-ui/core';
 import MuiDialogTitle from '@material-ui/core/DialogTitle';
 import CloseIcon from '@material-ui/icons/Close';
-import AddIcon from '@material-ui/icons/Add';
 
-import generateDescription from '../../../extensions/DescriptionGenerator';
-import GameCreateForm from './GameCreateForm';
-
-const useStyles = makeStyles({
-    createFab: {
-        margin: 0,
-        top: 'auto',
-        right: 20,
-        bottom: 20,
-        left: 'auto',
-        position: 'fixed'
-    }
-});
+import { generateDescription } from '../../../../extensions/DescriptionGenerator';
+import GameUpdateForm from '../Forms/GameUpdateForm';
 
 const styles = theme => ({
     root: {
@@ -55,24 +43,22 @@ const DialogTitle = withStyles(styles)(props => {
     );
 });
 
-export default function GameCreateButton() {
-    const classes = useStyles();
-
+export default function GameUpdateButton(props) {
     return (
         <div>
             <Toggle initial={false}>
                 {({ on, toggle }) => (
                     <div>
-                        <Fab className={classes.createFab} color="primary" aria-label="add" onClick={toggle}>
-                            <AddIcon />
-                        </Fab>
+                        <Button size='small' onClick={toggle}>
+                            Update
+                        </Button>
                         <Dialog open={on} onClose={toggle} aria-labelledby="form-dialog-title">
-                            <DialogTitle id="form-dialog-title" onClose={toggle}>Create Game</DialogTitle>
+                            <DialogTitle id="form-dialog-title" onClose={toggle}>Update Game</DialogTitle>
                             <DialogContent>
                                 <DialogContentText>
                                     {generateDescription()}
                                 </DialogContentText>
-                                <GameCreateForm />
+                                <GameUpdateForm game={props.game} toggle={toggle} />
                             </DialogContent>
                         </Dialog>
                     </div>
