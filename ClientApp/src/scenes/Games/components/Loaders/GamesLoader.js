@@ -9,7 +9,7 @@ import GamesProgress from '../Progresses/GamesProgress';
 class GamesLoader extends Component {
     static propTypes = {
         games: PropTypes.array.isRequired,
-        gamesLoading: PropTypes.object.isRequired
+        gamesLoading: PropTypes.bool.isRequired
     };
 
     componentDidMount() {

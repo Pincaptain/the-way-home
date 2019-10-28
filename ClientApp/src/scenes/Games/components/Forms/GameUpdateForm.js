@@ -26,9 +26,8 @@ class GameUpdateForm extends Component {
         return (
             <div>
                 <Formik
-                    initialValues={{ name: this.props.game.name }}
+                    initialValues={{ name: this.props.game.name, id: this.props.game.id }}
                     onSubmit={values => {
-                        values.id = this.props.game.id;
                         this.props.updateGame(values);
                         this.props.toggle();
                     }}

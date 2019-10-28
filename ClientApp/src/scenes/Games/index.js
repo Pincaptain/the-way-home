@@ -2,8 +2,8 @@
 
 import { Box } from '@material-ui/core';
 
-import GamesLoader from './components/Loaders/GamesLoader';
 import GameCreateButton from './components/Buttons/GameCreateButton';
+import GamesLoader from './components/Loaders/GamesLoader';
 
 class Games extends Component {
     render() {

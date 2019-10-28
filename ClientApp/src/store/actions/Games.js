@@ -7,7 +7,8 @@ import {
     GET_GAME,
     CREATE_GAME,
     UPDATE_GAME,
-    DELETE_GAME
+    DELETE_GAME,
+    APPEND_GAMES
 } from '../types/Games';
 
 export const getGames = () => dispatch => {
@@ -80,6 +81,20 @@ export const deleteGame = (id) => dispatch => {
             });
 
             dispatch(getGames());
+        })
+        .catch(error => {
+            console.log(error);
+        });
+};
+
+export const appendGames = (offset, take) => dispatch => {
+    axios
+        .get(`/api/Games?offset=${offset}&take=${take}`)
+        .then(result => {
+            dispatch({
+                type: APPEND_GAMES,
+                payload: result.data
+            });
         })
         .catch(error => {
             console.log(error);

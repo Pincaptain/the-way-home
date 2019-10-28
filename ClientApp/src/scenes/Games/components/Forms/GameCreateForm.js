@@ -14,6 +14,7 @@ import {
     Button
 } from '@material-ui/core';
 
+import { generateDescription } from '../../../../extensions/DescriptionGenerator';
 import { isEmpty } from '../../../../extensions/Empty';
 import { createGame } from '../../../../store/actions/Games';
 
@@ -26,7 +27,7 @@ class GameCreateForm extends Component {
         return (
             <div>
                 <Formik
-                    initialValues={{ name: '' }}
+                    initialValues={{ name: '', description: generateDescription() }}
                     onSubmit={values => this.props.createGame(values)}
                     validationSchema={Yup.object().shape({
                         name: Yup.string()

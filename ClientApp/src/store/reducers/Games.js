@@ -3,7 +3,8 @@
     GET_GAME,
     CREATE_GAME,
     UPDATE_GAME,
-    DELETE_GAME
+    DELETE_GAME,
+    APPEND_GAMES
 } from '../types/Games';
 
 const initialState = {
@@ -34,6 +35,12 @@ export default function (state = initialState, action) {
             return state;
         case DELETE_GAME:
             return state;
+        case APPEND_GAMES:
+            return {
+                ...state,
+                games: [...state.games, action.payload],
+                gamesLoading: false
+            }
         default:
             return state;
     }

@@ -8,7 +8,7 @@ import {
 export default function GamesProgress() {
     return (
         <div>
-            <Box m='auto'>
+            <Box m={5}>
                 <LinearProgress />
             </Box>
         </div>

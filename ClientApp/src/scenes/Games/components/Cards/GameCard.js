@@ -11,7 +11,6 @@ import {
 import GameDeleteButton from '../Buttons/GameDeleteButton';
 import GameJoinButton from '../Buttons/GameJoinButton';
 import GameUpdateButton from '../Buttons/GameUpdateButton';
-import { generateDescription } from '../../../../extensions/DescriptionGenerator';
 
 const useStyles = makeStyles({
     card: {
@@ -43,14 +42,14 @@ export default function GameCard(props) {
             <Card className={classes.card}>
                 <CardContent>
                     <Typography className={classes.title} color="textSecondary" gutterBottom>
-                        Game
+                        Players: {props.game.playersCount}
                     </Typography>
                     <Typography variant="h5" component="h2"></Typography>
                     <Typography className={classes.pos} color="textSecondary">
                         {props.game.name}
                     </Typography>
                     <Typography className={classes.description} variant="body2" component="p">
-                        {generateDescription()}
+                        {props.game.description}
                     </Typography>
                 </CardContent>
                 <CardActions>

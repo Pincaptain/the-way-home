@@ -22,15 +22,18 @@ namespace TheWayHome.Repositories.Implementations
             {
                 var gameOne = new Game()
                 {
-                    Name = "Nogglerfoggler"
+                    Name = "Nogglerfoggler",
+                    Description = "He smiled to himself, enjoying the game they always played"
                 };
                 var gameTwo = new Game()
                 {
-                    Name = "Dawnbringer"
+                    Name = "Dawnbringer",
+                    Description = "It's a game, like a treasure hunt"
                 };
                 var gameThree = new Game()
                 {
-                    Name = "Game of Chairs"
+                    Name = "Game of Chairs",
+                    Description = "When we first played this game two or three days ago, she showed no ingenuity at all in finding the object"
                 };
 
                 Context.Games.Add(gameOne);
@@ -42,13 +45,14 @@ namespace TheWayHome.Repositories.Implementations
 
         public Task<List<Game>> FindAll()
         {
-            return Context.Games.ToListAsync();
+            return Context.Games.Include(g => g.Players).ToListAsync();
         }
 
         public Task<List<Game>> FindByCondition(Expression<Func<Game, bool>> condition)
         {
             return Context.Games
                 .Where(condition)
+                .Include(g => g.Players)
                 .ToListAsync();
         }
 
@@ -58,12 +62,15 @@ namespace TheWayHome.Repositories.Implementations
                 .Where(condition)
                 .Skip(offset)
                 .Take(take)
+                .Include(g => g.Players)
                 .ToListAsync();
         }
 
         public Task<Game> FindOne(Expression<Func<Game, bool>> condition)
         {
-            return Context.Games.FirstOrDefaultAsync(condition);
+            return Context.Games
+                .Include(g => g.Players)
+                .FirstOrDefaultAsync(condition);
         }
 
         public async Task<Game> Create(Game game)

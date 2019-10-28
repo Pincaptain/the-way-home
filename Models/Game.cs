@@ -11,7 +11,12 @@ namespace TheWayHome.Models
         [Required(ErrorMessage = "Name is required")]
         public string Name { get; set; }
 
+        [Required(ErrorMessage ="Description is required")]
+        public string Description { get; set; }
+
         public List<Player> Players { get; set; }
+
+        public long PlayersCount { get => Players.Count; }
 
         public Game() => Players = new List<Player>();
 
@@ -29,7 +34,7 @@ namespace TheWayHome.Models
 
         public override int GetHashCode()
         {
-            return HashCode.Combine(Id, Name, Players);
+            return HashCode.Combine(Id, Name, Description, Players);
         }
     }
 }
